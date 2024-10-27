@@ -7,6 +7,7 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { schema } from "./graphql/schema/schema.js";
 import { connectDB } from "./database/database.js";
+import { getAllUsers } from "./controllers/user.controller.js";
 
 dotenv.config({ path: "./.env" });
 
@@ -20,8 +21,7 @@ const server = new ApolloServer({
   typeDefs: schema,
   resolvers: {
     Query: {
-      hello: () => "Hello, World!",
-      hello2: () => "Hello, World! 2",
+      users: getAllUsers
     },
   },
 });
