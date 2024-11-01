@@ -8,6 +8,8 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { schema } from "./graphql/schema/schema.js";
 import { connectDB } from "./database/database.js";
 import { getAllUsers } from "./controllers/user.controller.js";
+import { getAllMovies, getMovieById } from "./controllers/movie.controller.js";
+import { getAllComments, getCommentById } from "./controllers/comment.controller.js";
 
 dotenv.config({ path: "./.env" });
 
@@ -21,8 +23,17 @@ const server = new ApolloServer({
   typeDefs: schema,
   resolvers: {
     Query: {
-      users: getAllUsers
+      users: getAllUsers,
+      movies: getAllMovies,
+      movie: getMovieById,
+      comments: getAllComments,
+      comment: getCommentById,
     },
+    Comment: {
+      movie_id: async (parent: any) => {
+        return getMovieById({ id: parent.movie_id });
+      },
+    }
   },
 });
 
